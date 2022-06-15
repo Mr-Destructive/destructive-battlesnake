@@ -17,7 +17,6 @@ func info() BattlesnakeInfoResponse {
 }
 
 func start(state GameState) {
-    log.Println(state)
 	log.Printf("%s START\n", state.Game.ID)
 }
 
@@ -86,6 +85,7 @@ func move(state GameState) BattlesnakeMoveResponse {
 		}
 	}
 
+    log.Println(safeMoves)
 	if len(safeMoves) == 0 {
 		nextMove = "down"
 		log.Printf("%s MOVE %d: No safe moves detected! Moving %s\n", state.Game.ID, state.Turn, nextMove)
@@ -93,7 +93,6 @@ func move(state GameState) BattlesnakeMoveResponse {
 		nextMove = safeMoves[rand.Intn(len(safeMoves))]
 		log.Printf("%s MOVE %d: %s\n", state.Game.ID, state.Turn, nextMove)
 	}
-    nextMove = "down"
 	return BattlesnakeMoveResponse{
 		Move: nextMove,
 	}
