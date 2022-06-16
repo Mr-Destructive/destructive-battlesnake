@@ -57,10 +57,10 @@ func move(state GameState) BattlesnakeMoveResponse {
         possibleMoves["left"] = false
     }
     if myHead.Y == boardHeight - 1 {
-        possibleMoves["down"] = false
+        possibleMoves["up"] = false
     }
     if myHead.Y == 0 {
-        possibleMoves["up"] = false
+        possibleMoves["down"] = false
     }
     
 
@@ -85,7 +85,6 @@ func move(state GameState) BattlesnakeMoveResponse {
 		}
 	}
 
-    log.Println(safeMoves)
 	if len(safeMoves) == 0 {
 		nextMove = "down"
 		log.Printf("%s MOVE %d: No safe moves detected! Moving %s\n", state.Game.ID, state.Turn, nextMove)
@@ -97,3 +96,4 @@ func move(state GameState) BattlesnakeMoveResponse {
 		Move: nextMove,
 	}
 }
+
