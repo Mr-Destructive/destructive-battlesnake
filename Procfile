@@ -1,1 +1,1 @@
-web: bin/go run main.go logic.go
+web: bin/starter-snake-go
