@@ -3,7 +3,26 @@ package main
 import (
 	"log"
 	"math/rand"
+    "reflect"
 )
+
+func exists(list []string, element string) bool {
+    for _, item := range list {
+        if element == item{
+            return true
+        }
+    }
+    return false
+}
+
+func map_exists(mapList []Coord, m Coord) bool {
+    for _, pos := range mapList {
+        if reflect.DeepEqual(pos, m){
+            return true
+        }
+    }
+    return false
+}
 
 func info() BattlesnakeInfoResponse {
 	log.Println("INFO")
@@ -66,7 +85,9 @@ func move(state GameState) BattlesnakeMoveResponse {
 
 	// TODO: Step 2 - Don't hit yourself.
 	// Use information in GameState to prevent your Battlesnake from colliding with itself.
-	// mybody := state.You.Body
+    myBody := state.You.Body
+
+
 
 	// TODO: Step 3 - Don't collide with others.
 	// Use information in GameState to prevent your Battlesnake from colliding with others.
@@ -90,10 +111,30 @@ func move(state GameState) BattlesnakeMoveResponse {
 		log.Printf("%s MOVE %d: No safe moves detected! Moving %s\n", state.Game.ID, state.Turn, nextMove)
 	} else {
 		nextMove = safeMoves[rand.Intn(len(safeMoves))]
-		log.Printf("%s MOVE %d: %s\n", state.Game.ID, state.Turn, nextMove)
+		for isSelfColliding(myBody, nextMove) == false{
+		    nextMove = safeMoves[rand.Intn(len(safeMoves))]
+        }
+        log.Printf("%s MOVE %d: %s\n", state.Game.ID, state.Turn, nextMove)
 	}
 	return BattlesnakeMoveResponse{
 		Move: nextMove,
 	}
+}
+
+func isSelfColliding(body []Coord, move string) bool {
+    currentHead := body[0]
+    futureHead := currentHead
+    move_direction := map[string]int{"left": -1, "right": 1, "up": 1, "down": -1}
+    
+    if exists([]string{"left", "right"}, move){
+        futureHead.X = currentHead.X + move_direction[move]
+    }else if exists([]string{"up", "down"}, move){
+        futureHead.Y = currentHead.Y + move_direction[move]
+    }
+    //return future_head
+    if map_exists(body, futureHead){
+        return false
+    }
+    return true
 }
 

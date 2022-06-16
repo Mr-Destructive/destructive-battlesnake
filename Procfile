@@ -1,1 +1,1 @@
-web: go run main.go logic.go
+web: bin/go run main.go logic.go
